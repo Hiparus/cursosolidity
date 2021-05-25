@@ -5,7 +5,6 @@ contract CompraEVendaCartaColecionavel {
     string public comprador;
     string public vendedor;
     string public cartaColecionavel;
-    uint public valorDoColecionavel;
 // As edicoes sao Alfa (a primeira de todas as edicoes do jogo e a mais cara), Beta (a sequencia para suprir os estoques) e Unlimited (uma ultima impressao do conteudo original).
 // Essas tres edicoes sao de uma lista de edicoes protegidas de reimpressoes, tornando as cartas limitadas e, portanto, aumentando seu valor.
 // As qualidades sao nm (praticamente perfeita), sp (levemente gasta), mp (moderadamente gasta), hp (altamente gasta) e d (danificada).
@@ -38,7 +37,7 @@ contract CompraEVendaCartaColecionavel {
         if (categoriaEdicao == 2) {
             return 200000;
         }
-        if (categoriaEdicao == 0) {
+        if (categoriaEdicao == 3) {
             return 50000;
         }
     }
@@ -64,26 +63,21 @@ contract CompraEVendaCartaColecionavel {
         }
     } 
     
-    function verificarLucroNaCompra(uint propostaDeVenda)
+    function calcularValor(uint precoInteiroDaEdicao, uint percentualPelaQualidade)
     public
-    view
-    returns (bool resposta) {
-        if (propostaDeVenda <= valorDoColecionavel) {
-            return true;
-        } else {
-            return false;
-        }
+    pure
+    returns(uint valorDoColecionavel) {
+        return precoInteiroDaEdicao * percentualPelaQualidade / 100;
     }
     
-    function verificarInteresseDeCompra(uint oferta)
-    public 
-    view
+    function verificarInteresseDeCompra(uint oferta, uint valorDoColecionavel)
+    public
+    pure
     returns (bool) {
-        if  (oferta <= valorDoColecionavel) {
+        if (oferta <= valorDoColecionavel) {
             return true;
         } else {
             return false;
         }
     }
-
-}    
+}
